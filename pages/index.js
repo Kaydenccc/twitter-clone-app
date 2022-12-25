@@ -3,7 +3,7 @@ import Feed from '../components/Feed';
 import Sidebar from '../components/Sidebar';
 import Widgets from '../components/Widgets';
 
-export default function Home() {
+export default function Home({ news }) {
   return (
     <>
       <Head>
@@ -12,15 +12,25 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen max-w-7xl mx-auto">
+      <main className="flex min-h-screen mx-auto">
         {/* Sidebar */}
         <Sidebar />
         {/* Feed */}
         <Feed />
         {/* Widgets */}
-        <Widgets />
+        <Widgets news={news?.articles} />
         {/* Modal */}
       </main>
     </>
   );
 }
+
+// https://saurav.tech/NewsAPI/top-headlines/category/business/us.json
+export const getServerSideProps = async (context) => {
+  const news = await fetch('https://saurav.tech/NewsAPI/top-headlines/category/health/us.json').then((res) => res.json());
+  return {
+    props: {
+      news,
+    },
+  };
+};
