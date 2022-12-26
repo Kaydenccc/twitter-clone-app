@@ -21,7 +21,7 @@ const Post = ({ post }) => {
         {/* Texts */}
         <p className="text-gray-800 text-[15] sm:text-[16px] mb-2">{post.text}</p>
         {/* Post Image */}
-        <img className="rounded-2xl mr-2" src={post.postImg} alt={post.text} />
+        <img className="rounded-2xl mr-2 w-full" src={post.postImg} alt={post.text} />
         {/* ICONS */}
         <div className="flex justify-between text-gray-500 p-2">
           <ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />

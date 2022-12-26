@@ -3,7 +3,7 @@ import Feed from '../components/Feed';
 import Sidebar from '../components/Sidebar';
 import Widgets from '../components/Widgets';
 
-export default function Home({ news }) {
+export default function Home({ news, followers }) {
   return (
     <>
       <Head>
@@ -12,13 +12,13 @@ export default function Home({ news }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen mx-auto">
+      <main className="flex min-h-screen mx-auto ">
         {/* Sidebar */}
         <Sidebar />
         {/* Feed */}
         <Feed />
         {/* Widgets */}
-        <Widgets news={news?.articles} />
+        <Widgets news={news?.articles} followers={followers.results} />
         {/* Modal */}
       </main>
     </>
@@ -28,9 +28,12 @@ export default function Home({ news }) {
 // https://saurav.tech/NewsAPI/top-headlines/category/business/us.json
 export const getServerSideProps = async (context) => {
   const news = await fetch('https://saurav.tech/NewsAPI/top-headlines/category/health/us.json').then((res) => res.json());
+  // Who to follow section
+  const followers = await fetch('https://randomuser.me/api/?results=30&inc=name,login,picture').then((res) => res.json());
   return {
     props: {
       news,
+      followers,
     },
   };
 };
