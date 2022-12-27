@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24">
       {/* Twitter logo */}
-      <div className="hover-effect p-0 hover:bg-blue-100 xl:px-1">
+      <div className="hover-effect p-0 hover:bg-blue-100 ">
         <Image width={50} height={50} src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png" alt="logo twitter" />
       </div>
       {/* Menu  */}
@@ -38,7 +38,7 @@ const Sidebar = () => {
       {/* Mini profile */}
       {data && (
         <div className="hover-effect text-gray-700 flex items-center justify-center xl:justify-start mt-auto">
-          <img onClick={signOut} className="h-10 w-10 rounded-full object-cover xl:mr-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHDRlp-KGr_M94k_oor4Odjn2UzbAS7n1YoA&usqp=CAU" alt="dummy profile picture" />
+          <img onClick={signOut} className="h-10 w-10 rounded-full object-cover xl:mr-2" src={data.user.image} alt="dummy profile picture" />
           <div className="leading-5 hidden xl:inline">
             <h4 className="font-bold">{data.user.name}</h4>
             <p className="text-gray-500">@{data.user.username}</p>
