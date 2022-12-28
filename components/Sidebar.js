@@ -38,7 +38,7 @@ const Sidebar = () => {
       {/* Mini profile */}
       {data && (
         <div className="hover-effect text-gray-700 flex items-center justify-center xl:justify-start mt-auto">
-          <img onClick={signOut} className="h-10 w-10 rounded-full object-cover xl:mr-2" src={data.user.image} alt="dummy profile picture" />
+          <img onClick={signOut} className="h-10 w-10 rounded-full object-cover xl:mr-2" src={data?.user?.image} alt="dummy profile picture" />
           <div className="leading-5 hidden xl:inline">
             <h4 className="font-bold">{data.user.name}</h4>
             <p className="text-gray-500">@{data.user.username}</p>

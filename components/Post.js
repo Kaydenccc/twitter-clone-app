@@ -1,17 +1,48 @@
 import { ChartBarIcon, ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontalIcon, HeartIcon, ShareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartIconLike } from '@heroicons/react/24/solid';
+import { collection, deleteDoc, doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { signIn, useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
+import { db } from '../firebase';
 const Post = ({ post }) => {
+  const { data } = useSession();
+  const [likes, setLikes] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
+
+  // space
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'posts', post.id, 'likes'), (snapshot) => setLikes(snapshot.docs));
+  }, [db]);
+
+  useEffect(() => {
+    setHasLiked(likes.findIndex((like) => like.id === data?.user.id) !== -1);
+  }, [likes]);
+
+  const likePost = async () => {
+    if (data) {
+      if (hasLiked) {
+        await deleteDoc(doc(db, 'posts', post.id, 'likes', data?.user.id));
+      } else {
+        await setDoc(doc(db, 'posts', post.id, 'likes', data?.user.id), {
+          username: data.user.username,
+        });
+      }
+    } else {
+      signIn();
+    }
+  };
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200">
       {/* Image */}
-      <img className="w-11 h-11 rounded-full object-cover mr-4" src={post.data().userImage} alt={post.data().name + '-image'} />
+      <img className="w-11 h-11 rounded-full object-cover mr-4" src={post?.data()?.userImage} alt={post?.data().name + '-image'} />
       {/* Right side */}
       <div>
         {/* Header */}
         <div className="flex items-center">
           {/* User info */}
           <div className="flex space-x-1 items-center whitespace-nowrap">
-            <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{post.data().name}</h4>
+            <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{post?.data().name}</h4>
             <span className="text-sm sm:text-[15px]">@{post.data().username} - </span>
             <span className="text-sm sm:text-[15px] hover:underline">
               <Moment fromNow>{post.data().timestamps.toDate()}</Moment>
@@ -23,12 +54,19 @@ const Post = ({ post }) => {
         {/* Texts */}
         <p className="text-gray-800 text-[15] sm:text-[16px] mb-2">{post.data().text}</p>
         {/* Post Image */}
-        <img className="rounded-2xl mr-2 w-full" src={post?.data().image} alt={post.data().text} />
+        <img className="rounded-2xl mr-2 w-full" src={post?.data()?.image} alt={post?.data()?.text} />
         {/* ICONS */}
         <div className="flex justify-between text-gray-500 p-2">
           <ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
           <TrashIcon className="h-9 w-9 hover-effect p-2 hover:text-red-600 hover:bg-red-100" />
-          <HeartIcon className="h-9 w-9 hover-effect p-2 hover:text-red-600 hover:bg-red-100" />
+          <div className="flex items-center justify-center">
+            {hasLiked ? (
+              <HeartIconLike className="h-9 w-9 hover-effect p-2 text-red-500 hover:text-red-600 hover:bg-red-100" onClick={likePost} />
+            ) : (
+              <HeartIcon onClick={likePost} className="h-9 w-9 hover-effect p-2 hover:text-red-600 hover:bg-red-100" />
+            )}
+            {likes.length > 0 && <span className={`${hasLiked && 'text-red-600'} text-sm select-none`}>{likes.length}</span>}
+          </div>
           <ShareIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
           <ChartBarIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
         </div>
