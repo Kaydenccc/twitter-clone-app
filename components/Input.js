@@ -43,7 +43,6 @@ const Input = () => {
   };
   const addImagePost = async (e) => {
     const reader = new FileReader();
-    // console.log(URL.createObjectURL(e.target.files[0]));
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
