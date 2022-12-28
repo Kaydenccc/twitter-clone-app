@@ -37,7 +37,9 @@ const Post = ({ post }) => {
   const deletePost = async () => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       await deleteDoc(doc(db, 'posts', post.id));
-      deleteObject(ref(storage, `posts/${post.id}/image`));
+      if (post.data().image) {
+        deleteObject(ref(storage, `posts/${post.id}/image`));
+      }
     }
   };
   return (
@@ -62,7 +64,7 @@ const Post = ({ post }) => {
         {/* Texts */}
         <p className="text-gray-800 text-[15] sm:text-[16px] mb-2">{post.data().text}</p>
         {/* Post Image */}
-        <img className="rounded-2xl mr-2 w-full" src={post?.data()?.image} alt={post?.data()?.text} />
+        {post.data().image && <img className="rounded-2xl mr-2 w-full" src={post?.data()?.image} alt={post?.data()?.text} />}
         {/* ICONS */}
         <div className="flex justify-between text-gray-500 p-2">
           <ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
