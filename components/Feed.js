@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import Input from './Input';
 import Post from './Post';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
-    return onSnapshot(query(collection(db, 'posts')), orderBy('timestamps', 'desc'), (snapshot) => setPosts(snapshot.docs));
+    return onSnapshot(query(collection(db, 'posts'), orderBy('timestamps', 'desc')), (snapshot) => setPosts(snapshot.docs));
   }, []);
 
   return (
@@ -20,9 +21,13 @@ const Feed = () => {
         </div>
       </div>
       <Input />
-      {posts.map((post) => (
-        <Post post={post} key={post.data().id} />
-      ))}
+      <AnimatePresence>
+        {posts.map((post) => (
+          <motion.div key={post.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} exit={{ opacity: 0, scale: 0.95 }}>
+            <Post post={post} key={post.id} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

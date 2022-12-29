@@ -1,4 +1,5 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import News from './News';
 
@@ -15,27 +16,40 @@ const Widgets = ({ news, followers }) => {
       </div>
       <div className="text-gray-700 bg-gray-100 space-y-3 rounded-xl pt-2 w-[90%] ">
         <h4 className="font-bold text-xl px-4">What's happening</h4>
-        {news?.slice(0, articleNum).map((article) => (
-          <News key={article.title} article={article} />
-        ))}
+        <AnimatePresence>
+          {news?.slice(0, articleNum).map((article) => (
+            <motion.div key={article.title} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1 }}>
+              <News key={article.title} article={article} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
         <button onClick={() => setArticleNum(articleNum + 2)} className="text-blue-300 pl-4 pb-3 hover:text-blue-400">
           Show more
         </button>
       </div>
       <div className="text-gray-700 sticky top-16 bg-gray-100 space-y-3 rounded-xl pt-2 w-[90%]">
         <h4 className="font-bold text-xl px-4">Who to follow</h4>
-        {followers?.slice(0, usersNum).map((follower) => (
-          <div key={follower.login.uuid} className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-200">
-            <img src={follower.picture.thumbnail} width={40} className="rounded-full object-cover" alt={follower.login.username} />
-            <div className="truncate ml-4 leading-5">
-              <h4 className="font-bold hover:underline text-[14px] truncate">{follower.login.username}</h4>
-              <h5 className="text-[13px] text-gray-500 truncate">
-                {follower.name.first} {follower.name.last}
-              </h5>
-            </div>
-            <button className="ml-auto bg-black text-white rounded-full text-sm px-3.5 py-1.5">Follow</button>
-          </div>
-        ))}
+        <AnimatePresence>
+          {followers?.slice(0, usersNum).map((follower) => (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              key={follower.login.uuid}
+              className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-200 transition duration-500"
+            >
+              <img src={follower.picture.thumbnail} width={40} className="rounded-full object-cover" alt={follower.login.username} />
+              <div className="truncate ml-4 leading-5">
+                <h4 className="font-bold hover:underline text-[14px] truncate">{follower.login.username}</h4>
+                <h5 className="text-[13px] text-gray-500 truncate">
+                  {follower.name.first} {follower.name.last}
+                </h5>
+              </div>
+              <button className="ml-auto bg-black text-white rounded-full text-sm px-3.5 py-1.5">Follow</button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
         <button onClick={() => setUsersNum(usersNum + 5)} className="text-blue-300 pl-4 pb-3 hover:text-blue-400">
           Show more
         </button>

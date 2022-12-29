@@ -1,6 +1,6 @@
 const News = ({ article }) => {
   return (
-    <a className="inline-block p-2 px-4 hover:bg-gray-200 transition duration-200" href={article.url} target="_blank">
+    <a className="inline-block p-2 px-4 hover:bg-gray-200 transition duration-500 ease-out" href={article.url} target="_blank">
       <div className="">
         <div className="space-y-0.5">
           <h6 className="font-bold">{article.title}</h6>
