@@ -28,6 +28,7 @@ const CommentModal = () => {
         username: data?.user?.username,
         image: data?.user?.image,
         timestamps: serverTimestamp(),
+        userId: data.user.id,
       });
       setIsOpen(false);
       setInput('');

@@ -24,7 +24,7 @@ const Feed = () => {
       <AnimatePresence>
         {posts.map((post) => (
           <motion.div key={post.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} exit={{ opacity: 0, scale: 0.95 }}>
-            <Post post={post} key={post.id} />
+            <Post post={post} id={post.id} key={post.id} />
           </motion.div>
         ))}
       </AnimatePresence>
