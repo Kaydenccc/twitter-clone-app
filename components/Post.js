@@ -6,7 +6,11 @@ import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import { db, storage } from '../firebase';
+import { useRecoilState } from 'recoil';
+import { modalState, postIdState } from '../atom/modalAtom';
 const Post = ({ post }) => {
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [postId, setPostId] = useRecoilState(postIdState);
   const { data } = useSession();
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
@@ -67,7 +71,17 @@ const Post = ({ post }) => {
         {post.data().image && <img className="rounded-2xl mr-2 w-full" src={post?.data()?.image} alt={post?.data()?.text} />}
         {/* ICONS */}
         <div className="flex justify-between text-gray-500 p-2">
-          <ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
+          <ChatBubbleOvalLeftEllipsisIcon
+            onClick={() => {
+              if (!data) {
+                signIn();
+              } else {
+                setPostId(post.id);
+                setIsOpen(true);
+              }
+            }}
+            className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100"
+          />
           {post.data().id === data?.user?.id && <TrashIcon onClick={deletePost} className="h-9 w-9 hover-effect p-2 hover:text-red-600 hover:bg-red-100" />}
 
           <div className="flex items-center justify-center">
