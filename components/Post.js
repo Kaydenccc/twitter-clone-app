@@ -61,11 +61,11 @@ const Post = ({ post, id }) => {
         {/* Header */}
         <div className="flex items-center w-full">
           {/* User info */}
-          <div className="flex space-x-1 items-center whitespace-nowrap">
-            <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{post?.data()?.name}</h4>
-            <span className="text-sm sm:text-[15px]">@{post?.data()?.username} - </span>
-            <span className="text-sm sm:text-[15px] hover:underline">
-              <Moment fromNow>{post?.data()?.timestamps?.toDate()}</Moment>
+          <div className="flex space-x-1 items-center  whitespace-nowrap">
+            <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline ">{post?.data()?.name}</h4>
+            <span className="hidden sm:inline-block text-[13px] sm:text-[15px]">@{post?.data()?.username}</span>
+            <span className="text-[13px] sm:text-[15px] hover:underline">
+              - <Moment fromNow>{post?.data()?.timestamps?.toDate()}</Moment>
             </span>
           </div>
           {/* Dots Icon */}
@@ -78,7 +78,7 @@ const Post = ({ post, id }) => {
         {/* Post Image */}
         {post.data()?.image && <img onClick={() => router.push(`/posts/${id}`)} className="rounded-2xl mr-2 w-full" src={post?.data()?.image} alt={post?.data()?.text} />}
         {/* ICONS */}
-        <div className="flex justify-between text-gray-500 p-2">
+        <div className="flex  w-full justify-between text-gray-500 p-2">
           <div className="flex items-center justify-center">
             <ChatBubbleOvalLeftEllipsisIcon
               onClick={() => {

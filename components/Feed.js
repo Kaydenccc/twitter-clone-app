@@ -5,6 +5,7 @@ import { db } from '../firebase';
 import Input from './Input';
 import Post from './Post';
 import { AnimatePresence, motion } from 'framer-motion';
+import Loading from './Loading';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -22,11 +23,15 @@ const Feed = () => {
       </div>
       <Input />
       <AnimatePresence>
-        {posts.map((post) => (
-          <motion.div key={post.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} exit={{ opacity: 0, scale: 0.95 }}>
-            <Post post={post} id={post.id} key={post.id} />
-          </motion.div>
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <motion.div key={post.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} exit={{ opacity: 0, scale: 0.95 }}>
+              <Post post={post} id={post.id} key={post.id} />
+            </motion.div>
+          ))
+        ) : (
+          <Loading />
+        )}
       </AnimatePresence>
     </div>
   );

@@ -14,7 +14,7 @@ export default function Home({ news, followers }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen mx-auto max-w-[90rem]">
+      <main className="flex min-h-screen mx-auto max-w-full md:max-w-[90rem]">
         {/* Sidebar */}
         <Sidebar />
         {/* Feed */}

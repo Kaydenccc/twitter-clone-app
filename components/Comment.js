@@ -45,7 +45,7 @@ const Comment = ({ comments, commentId, originalPostId }) => {
     }
   };
   return (
-    <div className="flex p-3 pl-20 cursor-pointer border-b border-gray-200">
+    <div className="flex p-3 pl-12 md:pl-20 w-full cursor-pointer border-b border-gray-200">
       {/* Image */}
       <img className="w-11 h-11 rounded-full object-cover mr-4" src={comments?.image} alt={comments?.name + '-image'} />
       {/* Right side */}
@@ -55,9 +55,9 @@ const Comment = ({ comments, commentId, originalPostId }) => {
           {/* User info */}
           <div className="flex space-x-1 items-center whitespace-nowrap">
             <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{comments?.name}</h4>
-            <span className="text-sm sm:text-[15px]">@{comments?.username} - </span>
-            <span className="text-sm sm:text-[15px] hover:underline">
-              <Moment fromNow>{comments?.timestamps?.toDate()}</Moment>
+            <span className="text-[13px] sm:text-[15px] hidden sm:inline-block">@{comments?.username}</span>
+            <span className="text-[13px] sm:text-[15px] hover:underline">
+              - <Moment fromNow>{comments?.timestamps?.toDate()}</Moment>
             </span>
           </div>
           {/* Dots Icon */}
@@ -67,19 +67,6 @@ const Comment = ({ comments, commentId, originalPostId }) => {
         <p className="text-gray-800 text-[15] sm:text-[16px] mb-2">{comments?.comments}</p>
         {/* ICONS */}
         <div className="flex justify-between text-gray-500 p-2">
-          {/* <div className="flex items-center justify-center">
-            <ChatBubbleOvalLeftEllipsisIcon
-              onClick={() => {
-                if (!data) {
-                  signIn();
-                } else {
-                  setPostId(originalPostId);
-                  setIsOpen(true);
-                }
-              }}
-              className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100"
-            />
-          </div> */}
           {comments?.userId === data?.user?.id && <TrashIcon onClick={deletePost} className="h-9 w-9 hover-effect p-2 hover:text-red-600 hover:bg-red-100" />}
 
           <div className="flex items-center justify-center">

@@ -41,17 +41,26 @@ const Posts = ({ news, followers }) => {
           {/* Feed */}
           <div className="xl:ml-[370px] border-x border-gray-200 xl:min-w-[576px] flex-grow max-w-xl sm:ml-[73px]">
             <div className="flex items-center py-2 px-3 sticky top-0 z-50 bg-white/80 backdrop-blur-md border-gray-200">
-              <div onClick={() => router.push('/')} className=" flex h-9 w-9 mr-2  items-center justify-center hover-effect">
-                <ArrowLeftIcon className="h-5" />
+              <div onClick={() => router.push('/')} className=" flex h-9 w-9 mr-2 md:!p-0  items-center justify-center hover-effect">
+                <ArrowLeftIcon className="!h-5 text-lg" />
               </div>
               <h2 className="text-lg sm:text-xl font-bold cursor-pointer">Tweet</h2>
             </div>
             <AnimatePresence>
               {post ? (
-                <motion.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1 }}>
-                  <Post post={post} id={id} />
-                  {comments.length > 0 && comments.map((comment) => <Comment comments={comment?.data()} key={comment.id} originalPostId={id} commentId={comment.id} />)}
-                </motion.div>
+                <>
+                  <motion.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1 }}>
+                    <Post post={post} id={id} />
+                    <AnimatePresence>
+                      {comments.length > 0 &&
+                        comments.map((comment) => (
+                          <motion.div key={comment.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} exit={{ opacity: 0 }}>
+                            <Comment comments={comment?.data()} key={comment.id} originalPostId={id} commentId={comment.id} />
+                          </motion.div>
+                        ))}
+                    </AnimatePresence>
+                  </motion.div>
+                </>
               ) : (
                 <motion.div key={post.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} exit={{ opacity: 0 }}>
                   <Loading />
