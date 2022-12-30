@@ -13,11 +13,15 @@ const Post = ({ post }) => {
   const [postId, setPostId] = useRecoilState(postIdState);
   const { data } = useSession();
   const [likes, setLikes] = useState([]);
+  const [comments, setComments] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
 
   // space
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'posts', post.id, 'likes'), (snapshot) => setLikes(snapshot.docs));
+  }, [db]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'posts', post.id, 'comments'), (snapshot) => setComments(snapshot.docs));
   }, [db]);
 
   useEffect(() => {
@@ -71,17 +75,20 @@ const Post = ({ post }) => {
         {post.data().image && <img className="rounded-2xl mr-2 w-full" src={post?.data()?.image} alt={post?.data()?.text} />}
         {/* ICONS */}
         <div className="flex justify-between text-gray-500 p-2">
-          <ChatBubbleOvalLeftEllipsisIcon
-            onClick={() => {
-              if (!data) {
-                signIn();
-              } else {
-                setPostId(post.id);
-                setIsOpen(true);
-              }
-            }}
-            className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100"
-          />
+          <div className="flex items-center justify-center">
+            <ChatBubbleOvalLeftEllipsisIcon
+              onClick={() => {
+                if (!data) {
+                  signIn();
+                } else {
+                  setPostId(post.id);
+                  setIsOpen(true);
+                }
+              }}
+              className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100"
+            />
+            {comments.length > 0 && <span className={`text-sm select-none`}>{comments.length}</span>}
+          </div>
           {post.data().id === data?.user?.id && <TrashIcon onClick={deletePost} className="h-9 w-9 hover-effect p-2 hover:text-red-600 hover:bg-red-100" />}
 
           <div className="flex items-center justify-center">
@@ -92,6 +99,7 @@ const Post = ({ post }) => {
             )}
             {likes.length > 0 && <span className={`${hasLiked && 'text-red-600'} text-sm select-none`}>{likes.length}</span>}
           </div>
+
           <ShareIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
           <ChartBarIcon className="h-9 w-9 hover-effect p-2 hover:text-blue-500 hover:bg-sky-100" />
         </div>
